@@ -45,13 +45,13 @@ def teacher_dashboard():
         header_dashboard()
     with c2:
         st.subheader(f"""Welcome, {teacher_data['name']} """)
-        if st.button("Logout", type='secondary', key='loginbackbtn', shortcut="control+backspace"):
+        if st.button("Logout", type='secondary', key='loginbackbtn'):
             st.session_state['is_logged_in'] = False
             del st.session_state.teacher_data 
             st.rerun()
 
 
-    st.space()
+    st.markdown("<br>", unsafe_allow_html=True)
 
     if "current_teacher_tab" not in st.session_state:
         st.session_state.current_teacher_tab = 'take_attendance'
@@ -204,7 +204,7 @@ def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
     col1, col2 = st.columns(2)
     with col1:
-        st.header('Manage Subjects', width='stretch')
+        st.header('Manage Subjects')
 
     with col2:
         if st.button('Create New Subject', width='stretch', key='create_new_subject_btn'):
@@ -219,18 +219,18 @@ def teacher_tab_manage_subjects():
                 ("🫂", "Students", sub['total_students']),
                 ("🕰️", "Classes", sub['total_classes']),
             ]
-        def share_btn():
-            if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
-                share_subject_dialog(sub['name'], sub['subject_code'])
-            st.space()
+            def share_btn():
+                if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
+                    share_subject_dialog(sub['name'], sub['subject_code'])
+                st.markdown("<br>", unsafe_allow_html=True)
 
-        subject_card(
-            name = sub['name'],
-            code = sub['subject_code'],
-            section = sub['section'],
-            stats=stats,
-            footer_callback=share_btn
-        )
+            subject_card(
+                name = sub['name'],
+                code = sub['subject_code'],
+                section = sub['section'],
+                stats=stats,
+                footer_callback=share_btn
+            )
     else:
         st.info("NO SUBJECTS FOUND. CREATE ONE ABOVE")
 
@@ -281,7 +281,7 @@ def teacher_tab_attendance_records():
                   [['Time', 'Subject', 'Subject Code', 'Attendance Stats']]
                   )
     
-    st.dataframe(display_df, width='stretch', hide_index=True)
+    st.dataframe(display_df, use_container_width=True, hide_index=True)
 
 
 def login_teacher(username, password):
@@ -303,13 +303,13 @@ def teacher_screen_login():
     with c1:
         header_dashboard()
     with c2:
-        if st.button("Go back to Home", type='secondary', key='loginbackbtn', shortcut="control+backspace"):
+        if st.button("Go back to Home", type='secondary', key='loginbackbtn_home'):
             st.session_state['login_type'] = None
             st.rerun()
 
     st.header('Login using password', text_alignment='center')
-    st.space()
-    st.space()
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
 
     teacher_username = st.text_input("Enter username", placeholder='ananyaroy')
@@ -321,7 +321,7 @@ def teacher_screen_login():
     btnc1, btnc2 = st.columns(2)
 
     with btnc1:
-        if st.button('Login', icon=':material/passkey:', shortcut='control+enter', width='stretch', key='teacher_login_btn'):
+        if st.button('Login', icon=':material/passkey:', width='stretch', key='teacher_login_btn'):
             if login_teacher(teacher_username, teacher_pass):
                 st.toast("welcome back!", icon="👋")
                 import time
@@ -358,7 +358,7 @@ def teacher_screen_register():
     with c1:
         header_dashboard()
     with c2:
-        if st.button("Go back to Home", type='secondary', key='loginbackbtn', shortcut="control+backspace"):
+        if st.button("Go back to Home", type='secondary', key='loginbackbtn_home'):
             st.session_state['login_type'] = None
             st.rerun()
 
@@ -366,8 +366,8 @@ def teacher_screen_register():
 
     st.header('Register your teacher profile')
 
-    st.space()
-    st.space()
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
     
     teacher_username = st.text_input("Enter username", placeholder='ananyaroy')
@@ -383,7 +383,7 @@ def teacher_screen_register():
     btnc1, btnc2 = st.columns(2)
 
     with btnc1:
-        if st.button('Register now', icon=':material/passkey:', shortcut='control+enter', width='stretch', key='teacher_register_now_btn'):
+        if st.button('Register now', icon=':material/passkey:', width='stretch', key='teacher_register_now_btn'):
             success, message = register_teacher(teacher_username, teacher_name, teacher_pass, teacher_pass_confirm)
             if success:
                 st.success(message)
