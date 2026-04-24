@@ -1,0 +1,14 @@
+venv/
+.env/
+.vscode/
+__pycache__/
+*.py[cod]
+*.class
+*.so
+dist/
+build/
+*.egg-info/
+.env
+.streamlit/
+.DS_Store
+Thumbs.db
