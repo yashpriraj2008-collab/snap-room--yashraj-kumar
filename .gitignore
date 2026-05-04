@@ -1,14 +1,25 @@
-venv/
-.env/
-.vscode/
+# Python
 __pycache__/
 *.py[cod]
-*.class
 *.so
+*.egg
+*.egg-info/
 dist/
 build/
-*.egg-info/
 .env
-.streamlit/secrets.toml
+
+# Venv
+venv/
+.venv/
+env/
+
+# Streamlit
+.streamlit/config.toml
+!.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
-Thumbs.db

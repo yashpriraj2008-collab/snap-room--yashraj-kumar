@@ -15,8 +15,14 @@ from src.components.dialog_enroll import enroll_dialog
 from src.components.subject_card import subject_card
 
 def student_dashboard():
+    if st.session_state.student_data is None:
+        del st.session_state.student_data
+        st.session_state['is_logged_in'] = False
+        st.rerun()
+        return
     student_data = st.session_state.student_data
     student_id = student_data['student_id']
+
     c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
     with c1:
         header_dashboard()
@@ -95,8 +101,13 @@ def student_screen():
 
 
     if "student_data" in st.session_state:
-        student_dashboard()
-        return
+        if st.session_state.student_data is None:
+            del st.session_state.student_data
+            st.rerun()
+        else:
+            student_dashboard()
+            return
+
     
     c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
     with c1:
@@ -136,6 +147,10 @@ def student_screen():
                         st.toast(f"Welcome Back {student['name']}")
                         time.sleep(1)
                         st.rerun()
+                    else:
+                        st.info('Student profile not found! Please register as new student.')
+                        show_registration = True
+
                 else:
                     st.info('Face not recognized! You might be a new student!')
                     show_registration = True
@@ -169,7 +184,7 @@ def student_screen():
 
                             response_data = create_student(new_name, face_embedding=face_emb, voice_embedding=voice_emb)
 
-                            if response_data:
+                            if response_data and len(response_data) > 0:
                                 train_classifier()
                                 st.session_state.is_logged_in = True
                                 st.session_state.user_role = 'student'
@@ -177,6 +192,9 @@ def student_screen():
                                 st.toast(f'Profile Created! Hi {new_name}!')
                                 time.sleep(1)
                                 st.rerun()
+                            else:
+                                st.error('Registration failed. Please try again.')
+
                         else:
                             st.error('Couldnt capture your facial features for registration')
 
